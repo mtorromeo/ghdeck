@@ -2,8 +2,8 @@
   <div id="app">
     <div class="toolbar">
       <button :disabled="!canShuffle" type="button" @click="shuffle">Shuffle</button>
-      <button type="button" @click="add('curse')">+Curse</button>
-      <button type="button" @click="add('bless')">+Bless</button>
+      <button type="button" :disabled="curseCount >= 10" @click="add('curse')">+Curse ({{ curseCount }})</button>
+      <button type="button" :disabled="blessCount >= 10" @click="add('bless')">+Bless ({{ blessCount }})</button>
     </div>
 
     <div class="decks">
@@ -67,6 +67,14 @@ export default {
     canShuffle() {
       return this.discarded.some(e => ['∅', '2×'].includes(e));
     },
+
+    blessCount() {
+      return this.count('bless');
+    },
+
+    curseCount() {
+      return this.count('curse');
+    },
   },
 
   mounted() {
@@ -95,6 +103,10 @@ export default {
     add(card) {
       this.available.push(card);
       this.shuffle();
+    },
+
+    count(card) {
+      return this.available.reduce((acc, cur) => acc + (cur === card ? 1 : 0), 0);
     },
   },
 };

@@ -102,7 +102,7 @@ export default {
 
     add(card) {
       this.available.push(card);
-      this.shuffle();
+      this.available = shuffle(this.available);
     },
 
     count(card) {
